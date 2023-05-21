@@ -1,0 +1,12 @@
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\bin\Debug\net7.0\AltPoint.Domain.deps.json
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\bin\Debug\net7.0\AltPoint.Domain.dll
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\bin\Debug\net7.0\AltPoint.Domain.pdb
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.csproj.AssemblyReference.cache
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.AssemblyInfoInputs.cache
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.AssemblyInfo.cs
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.dll
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\refint\AltPoint.Domain.dll
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\AltPoint.Domain.pdb
+C:\Users\Artem\source\repos\AltPoint\AltPoint.Domain\obj\Debug\net7.0\ref\AltPoint.Domain.dll
