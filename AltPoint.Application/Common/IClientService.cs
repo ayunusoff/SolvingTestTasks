@@ -9,5 +9,9 @@ namespace AltPoint.Application.Common
         Task<IEnumerable<Client>> GetAllClientsWithParam(QueryParameters parameters);
         void DeleteClient(Guid id);
         GetClientResponse GetClient(Guid id);
+        Task<ClientWithSpouseResponse> GetClientWithSpouse(Guid id);
+        Task AddClient(Client client);
+
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AltPoint.Domain.Interfaces;
+using AltPoint.Infrastructure.Persistance.EFCore.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             services.AddDbContext<AltPointContext>(options =>
                 options.UseNpgsql(config.GetConnectionString("Db"), b => b.MigrationsAssembly("AltPoint.Infrastructure")));
             services.AddScoped<IClientRepo, ClientRepo>();
+            services.AddScoped<IChildRepo, ChildRepo>();
+
             return services;
         }
     }

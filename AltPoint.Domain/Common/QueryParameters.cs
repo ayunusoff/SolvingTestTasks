@@ -26,6 +26,9 @@ namespace AltPoint.Domain.Common
         public string? SortedBy { get; set; }
         public string? SortDir { get; set; }
         public string? Search { get; set; }
+        public int? EduType { get; set; }
+        public int? Childs { get; set; }
+        public int? Income { get; set; }
 
     }
 }

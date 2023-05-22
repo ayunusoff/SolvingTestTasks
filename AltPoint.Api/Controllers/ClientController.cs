@@ -1,6 +1,7 @@
 ﻿using AltPoint.Application.Common;
 using AltPoint.Application.Services;
 using AltPoint.Domain.Common;
+using AltPoint.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AltPoint.Api.Controllers
@@ -10,31 +11,44 @@ namespace AltPoint.Api.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
-        ClientController(IClientService clientService)
+        public ClientController(IClientService clientService)
         {
             _clientService = clientService;
         }
         [HttpGet]
-        public IActionResult GetAll([FromQuery] QueryParameters parameters)
+        public async Task<IActionResult> GetAll([FromQuery] QueryParameters parameters)
         {
-            var clients = _clientService.GetAllClientsWithParam(parameters);
+            var clients = await _clientService.GetAllClientsWithParam(parameters);
             return Ok(clients);
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetWithSpouse(Guid id)
         {
-            return "value";
+            try
+            {
+                var client = _clientService.GetClientWithSpouse(id);
+                return Ok(client);
+            }
+            catch (NullReferenceException ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Client client)
         {
-        }
-
-        [HttpPatch("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            try
+            {
+                await _clientService.AddClient(client);
+                return Ok();
+            }
+            catch(NullReferenceException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{clientId}")]

@@ -9,6 +9,7 @@ namespace AltPoint.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IChildService, ChildService>();
 
             return services;
         }

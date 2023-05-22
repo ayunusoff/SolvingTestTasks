@@ -9,6 +9,6 @@ namespace AltPoint.Application.Common
 {
     public interface IChildService
     {
-        Task<IEnumerable<Child>> GetClientChild(Guid id);
+        Task<IEnumerable<Child>> GetClientChilds(Guid id);
     }
 }
