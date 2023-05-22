@@ -6,11 +6,17 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
+
 COPY ["AltPoint.Api/AltPoint.Api.csproj", "AltPoint.Api/"]
+COPY ["AltPoint.Infrastructure/AltPoint.Infrastructure.csproj", "AltPoint.Infrastructure/"]
+COPY ["AltPoint.Domain/AltPoint.Domain.csproj", "AltPoint.Domain/"]
+COPY ["AltPoint.Application/AltPoint.Application.csproj", "AltPoint.Application/"]
+
 RUN dotnet restore "AltPoint.Api/AltPoint.Api.csproj"
+
 COPY . .
-WORKDIR "/src/AltPoint.Api"
+WORKDIR "/AltPoint.Api"
+
 RUN dotnet build "AltPoint.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

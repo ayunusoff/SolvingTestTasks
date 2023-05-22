@@ -7,7 +7,7 @@ namespace AltPoint.Application.Common
     public interface IClientService
     {
         Task<IEnumerable<Client>> GetAllClientsWithParam(QueryParameters parameters);
-        void DeleteClient(Guid id);
+        Task DeleteClient(Guid id);
         GetClientResponse GetClient(Guid id);
         Task<ClientWithSpouseResponse> GetClientWithSpouse(Guid id);
         Task AddClient(Client client);
