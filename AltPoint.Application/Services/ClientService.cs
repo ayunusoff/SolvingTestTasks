@@ -12,9 +12,9 @@ namespace AltPoint.Application.Services
     public class ClientService : IClientService
     {
         public readonly IClientRepo _clientRepo;
-        public readonly ClientValidator _validator;
+        public readonly IValidator<ClientRequest> _validator;
         public readonly IMapper _mapper;
-        public ClientService(IClientRepo clientRepo, ClientValidator validator, IMapper mapper)
+        public ClientService(IClientRepo clientRepo, IValidator<ClientRequest> validator, IMapper mapper)
         {
             _clientRepo = clientRepo;
             _validator = validator;

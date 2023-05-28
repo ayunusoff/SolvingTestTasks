@@ -14,9 +14,9 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             _context = context;
         }
 
-        public void Add(Client obj)
+        public async Task Add(Client client)
         {
-            throw new NotImplementedException();
+            _context.Clients.Add(client);
         }
 
         public async Task<IEnumerable<Client>> GetAll()
@@ -31,7 +31,7 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public Client GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Clients.FirstOrDefault(c => c.Id == id)!;
         }
 
         public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, string SortDir, int Limit, int Page, string? Search)
@@ -45,21 +45,14 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             //    .Take(parameters.PageSize);
         }
 
-
-        //public Client GetSpouse(Guid id)
-        //{
-        //    var client
-        //    var spouse 
-        //}  
-
         public void Remove(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public int SaveChanges()
+        public async Task<int> SaveChanges()
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync();
         }
 
         public void Update(Client obj)

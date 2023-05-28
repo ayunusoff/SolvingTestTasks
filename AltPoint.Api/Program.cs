@@ -12,11 +12,6 @@ builder.Services.AddControllers();
 builder.Services.AddApplication()
     .AddEfCorePersistance(builder.Configuration);
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new ClientMap());
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

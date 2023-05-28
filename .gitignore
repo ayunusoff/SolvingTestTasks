@@ -1,14 +1,14 @@
 .vs/
 .vscode/
 
-AltPoint.Api/[Bb]in/
-AltPoint.Application/[Bb]in/
-AltPoint.Domain/[Bb]in/
-AltPoint.Infrastructure/[Bb]in/
+AltPoint.Api/bin/
+AltPoint.Application/bin/
+AltPoint.Domain/bin/
+AltPoint.Infrastructure/bin/
 
-AltPoint.Api/[Oo]bj/
-AltPoint.Application/[Oo]bj/
-AltPoint.Domain/[Oo]bj/
-AltPoint.Infrastructure/[Oo]bj/
+AltPoint.Api/obj/
+AltPoint.Application/obj/
+AltPoint.Domain/obj/
+AltPoint.Infrastructure/obj/
 [Bb]in/
 [Oo]bj/

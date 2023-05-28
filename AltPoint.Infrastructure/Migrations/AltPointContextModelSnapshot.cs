@@ -82,9 +82,6 @@ namespace AltPoint.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ParentId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Patronymic")
                         .IsRequired()
                         .HasColumnType("text");
@@ -328,23 +325,15 @@ namespace AltPoint.Infrastructure.Migrations
                     b.ToTable("ChildClient");
                 });
 
-            modelBuilder.Entity("AltPoint.Domain.Entities.Client", b =>
+            modelBuilder.Entity("AltPoint.Domain.Entities.Child", b =>
                 {
-                    b.HasOne("AltPoint.Domain.Entities.Address", "LivingAddress")
-                        .WithMany()
-                        .HasForeignKey("LivingAddressId")
+                    b.HasOne("AltPoint.Domain.Entities.Client", "Parent")
+                        .WithMany("Сhildrens")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AltPoint.Domain.Entities.Address", "RegAddress")
-                        .WithMany()
-                        .HasForeignKey("RegAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LivingAddress");
-
-                    b.Navigation("RegAddress");
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("AltPoint.Domain.Entities.Communication", b =>
@@ -432,6 +421,11 @@ namespace AltPoint.Infrastructure.Migrations
 
                     b.Navigation("Passport")
                         .IsRequired();
+
+                    b.Navigation("RegAddress")
+                        .IsRequired();
+
+                    b.Navigation("Сhildrens");
                 });
 #pragma warning restore 612, 618
         }

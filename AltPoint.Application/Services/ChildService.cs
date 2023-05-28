@@ -11,11 +11,5 @@ namespace AltPoint.Application.Services
 {
     public class ChildService : IChildService
     {
-        
-        public async Task<IEnumerable<ChildResponse>> GetClientChilds(Guid id) 
-        {
-            return new List<ChildResponse>();
-        }
-
     }
 }
