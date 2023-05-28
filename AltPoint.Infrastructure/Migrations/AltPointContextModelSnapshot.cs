@@ -32,15 +32,11 @@ namespace AltPoint.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ClientLivingAddressId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ClientRegAdressId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Country")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreateAt")
@@ -50,30 +46,28 @@ namespace AltPoint.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("House")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Region")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Street")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ZipCode")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientLivingAddressId")
-                        .IsUnique();
-
-                    b.HasIndex("ClientRegAdressId")
-                        .IsUnique();
 
                     b.ToTable("Addresses");
                 });
@@ -101,8 +95,6 @@ namespace AltPoint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
                     b.ToTable("Childs");
                 });
 
@@ -127,11 +119,14 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MonExpenses")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("LivingAddressId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("MonIncome")
-                        .HasColumnType("integer");
+                    b.Property<double>("MonExpenses")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MonIncome")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -143,6 +138,9 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Property<string>("Patronymic")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("RegAddressId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Surname")
                         .IsRequired()
@@ -156,6 +154,10 @@ namespace AltPoint.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("Id");
+
+                    b.HasIndex("LivingAddressId");
+
+                    b.HasIndex("RegAddressId");
 
                     b.ToTable("Clients");
                 });
@@ -223,7 +225,7 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DateDismissal")
+                    b.Property<DateTime?>("DateDismissal")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DateEmp")
@@ -241,8 +243,8 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Property<Guid>("JurAddressId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("MonIncome")
-                        .HasColumnType("integer");
+                    b.Property<double>("MonIncome")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
@@ -250,7 +252,7 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Property<string>("Tin")
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
+                    b.Property<int?>("Type")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -311,34 +313,38 @@ namespace AltPoint.Infrastructure.Migrations
                     b.ToTable("Passports");
                 });
 
-            modelBuilder.Entity("AltPoint.Domain.Entities.Address", b =>
+            modelBuilder.Entity("ChildClient", b =>
                 {
-                    b.HasOne("AltPoint.Domain.Entities.Client", "ClientLivingAddress")
-                        .WithOne("LivingAddress")
-                        .HasForeignKey("AltPoint.Domain.Entities.Address", "ClientLivingAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("ParentsId")
+                        .HasColumnType("uuid");
 
-                    b.HasOne("AltPoint.Domain.Entities.Client", "ClientRegAdress")
-                        .WithOne("RegAddress")
-                        .HasForeignKey("AltPoint.Domain.Entities.Address", "ClientRegAdressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("СhildrensId")
+                        .HasColumnType("uuid");
 
-                    b.Navigation("ClientLivingAddress");
+                    b.HasKey("ParentsId", "СhildrensId");
 
-                    b.Navigation("ClientRegAdress");
+                    b.HasIndex("СhildrensId");
+
+                    b.ToTable("ChildClient");
                 });
 
-            modelBuilder.Entity("AltPoint.Domain.Entities.Child", b =>
+            modelBuilder.Entity("AltPoint.Domain.Entities.Client", b =>
                 {
-                    b.HasOne("AltPoint.Domain.Entities.Client", "Parent")
-                        .WithMany("Сhildrens")
-                        .HasForeignKey("ParentId")
+                    b.HasOne("AltPoint.Domain.Entities.Address", "LivingAddress")
+                        .WithMany()
+                        .HasForeignKey("LivingAddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Parent");
+                    b.HasOne("AltPoint.Domain.Entities.Address", "RegAddress")
+                        .WithMany()
+                        .HasForeignKey("RegAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LivingAddress");
+
+                    b.Navigation("RegAddress");
                 });
 
             modelBuilder.Entity("AltPoint.Domain.Entities.Communication", b =>
@@ -401,6 +407,21 @@ namespace AltPoint.Infrastructure.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("ChildClient", b =>
+                {
+                    b.HasOne("AltPoint.Domain.Entities.Client", null)
+                        .WithMany()
+                        .HasForeignKey("ParentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AltPoint.Domain.Entities.Child", null)
+                        .WithMany()
+                        .HasForeignKey("СhildrensId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AltPoint.Domain.Entities.Client", b =>
                 {
                     b.Navigation("Communications");
@@ -409,16 +430,8 @@ namespace AltPoint.Infrastructure.Migrations
 
                     b.Navigation("Jobs");
 
-                    b.Navigation("LivingAddress")
-                        .IsRequired();
-
                     b.Navigation("Passport")
                         .IsRequired();
-
-                    b.Navigation("RegAddress")
-                        .IsRequired();
-
-                    b.Navigation("Сhildrens");
                 });
 #pragma warning restore 612, 618
         }

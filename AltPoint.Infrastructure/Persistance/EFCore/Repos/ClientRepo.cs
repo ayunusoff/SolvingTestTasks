@@ -34,14 +34,15 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Client>> GetClients(QueryParameters parameters)
+        public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, string SortDir, int Limit, int Page, string? Search)
         {
-            var clients = await GetAll();
-            return parameters.SortDir == "asc" ? clients.OrderBy(c => c.GetType().GetProperty(parameters.SortedBy!))
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize) : clients.OrderByDescending(c => c.GetType().GetProperty(parameters.SortedBy!))
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize);
+            IEnumerable<Client> clients = await GetAll();
+            return clients;
+            //return parameters.SortDir == "asc" ? clients.OrderBy(c => c.GetType().GetProperty(SortedBy!))
+            //    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            //    .Take(parameters.PageSize) : clients.OrderByDescending(c => c.GetType().GetProperty(parameters.SortedBy!))
+            //    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            //    .Take(parameters.PageSize);
         }
 
 

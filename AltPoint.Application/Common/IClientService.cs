@@ -1,13 +1,13 @@
-﻿using AltPoint.Application.Services;
-using AltPoint.Domain.Common;
-using AltPoint.Domain.Entities;
+﻿using AltPoint.Application.DTOs.Request;
+using AltPoint.Application.DTOs.Response;
 
 namespace AltPoint.Application.Common
 {
     public interface IClientService
     {
-        Task<IEnumerable<Client>> GetAllClientsWithParam(QueryParameters parameters);
+        Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters);
         void DeleteClient(Guid id);
-        GetClientResponse GetClient(Guid id);
+        ClientResponse GetClient(Guid id);
+        Task<Guid> PostClient(ClientRequest client);
     }
 }

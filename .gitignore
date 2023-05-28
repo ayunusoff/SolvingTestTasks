@@ -1,0 +1,14 @@
+.vs/
+.vscode/
+
+AltPoint.Api/[Bb]in/
+AltPoint.Application/[Bb]in/
+AltPoint.Domain/[Bb]in/
+AltPoint.Infrastructure/[Bb]in/
+
+AltPoint.Api/[Oo]bj/
+AltPoint.Application/[Oo]bj/
+AltPoint.Domain/[Oo]bj/
+AltPoint.Infrastructure/[Oo]bj/
+[Bb]in/
+[Oo]bj/

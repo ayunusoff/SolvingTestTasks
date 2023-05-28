@@ -1,6 +1,9 @@
 ﻿using AltPoint.Application.Common;
+using AltPoint.Application.DTOs.Request;
+using AltPoint.Application.DTOs.Response;
 using AltPoint.Application.Services;
 using AltPoint.Domain.Common;
+using AltPoint.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AltPoint.Api.Controllers
@@ -15,26 +18,56 @@ namespace AltPoint.Api.Controllers
             _clientService = clientService;
         }
         [HttpGet]
-        public IActionResult GetAll([FromQuery] QueryParameters parameters)
+        public async Task<IActionResult> GetAll([FromQuery] ClientQueryRequest parameters)
         {
-            var clients = _clientService.GetAllClientsWithParam(parameters);
+            ClientPaginationResponse clients = await _clientService.GetAllClientsWithParam(parameters);
+
             return Ok(clients);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{clientId}")]
+        public IActionResult Get(Guid clientId)
         {
-            return "value";
+            try
+            {
+                ClientResponse clientResponse = _clientService.GetClient(clientId);
+
+                return Ok(clientResponse);
+            }
+            catch (Exception ex) // TODO
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] ClientRequest clientRequest)
         {
+            try
+            {
+                Guid id = await _clientService.PostClient(clientRequest);
+
+                return Ok(id);
+            }
+            catch (Exception ex) // TODO
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        [HttpPatch("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch("{clientId}")]
+        public IActionResult Patch(Guid clientId, [FromBody] ClientRequest clientRequest)
         {
+            try
+            {
+                //Guid id = _clientService.PostClient(clientRequest); // TODO
+
+                return Ok("Данные клиента успешо обновленны");
+            }
+            catch (Exception ex) // TODO
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{clientId}")]
@@ -44,11 +77,11 @@ namespace AltPoint.Api.Controllers
             {
                 _clientService.DeleteClient(clientId);
 
-                return Ok();
+                return Ok("Клиент мягко удален");
             }
             catch (NullReferenceException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

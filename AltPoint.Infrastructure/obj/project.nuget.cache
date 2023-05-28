@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "6673fwVKMZew5biQLuAcrV1JWDQFjyopDimulXkm1toyXm0igOI80HLXhb9pD6FsPuGjqs/rdkf6cWcULjVLPQ==",
+  "dgSpecHash": "LSSeADc2hfxHDiQqyamLlrxFehMW5+j1/+HupF/W9Yq+3HxL1X1B78JO8PFQuYbnPqXIXyw+svoEo+sgCsb7Rw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Artem\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Artem\\.nuget\\packages\\fluentvalidation\\11.5.2\\fluentvalidation.11.5.2.nupkg.sha512",
     "C:\\Users\\Artem\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Artem\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Artem\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.5\\microsoft.entityframeworkcore.7.0.5.nupkg.sha512",

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AltPoint.Domain.Entities
@@ -13,7 +14,6 @@ namespace AltPoint.Domain.Entities
         public string Surname { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
         public Guid ParentId { get; set; }
-
-        public List<Client> Parents { get; set; } = null!;
+        public ICollection<Client> Parents { get; set; } = null!;
     }
 }

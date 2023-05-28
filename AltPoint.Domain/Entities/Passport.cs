@@ -1,9 +1,5 @@
 ﻿using AltPoint.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace AltPoint.Domain.Entities
 {
@@ -15,7 +11,6 @@ namespace AltPoint.Domain.Entities
         public string Giver { get; set; } = null!;
         public DateTime DateIssued { get; set; }
         public Guid ClientId { get; set; }
-
         public Client Client { get; set; } = null!;
     }
 }
