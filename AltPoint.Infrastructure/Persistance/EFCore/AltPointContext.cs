@@ -1,5 +1,7 @@
-﻿using AltPoint.Domain.Entities;
+﻿using AltPoint.Domain.Common;
+using AltPoint.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
     {
         public AltPointContext(DbContextOptions<AltPointContext> options) : base(options)
         {
+            SavingChanges += AltPointContext_SavingChanges!;
         }
         public DbSet<Client> Clients { get; set; } = null!;
         public DbSet<Address> Addresses { get; set; } = null!;
@@ -31,6 +34,33 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                     .HasForeignKey<Passport>(p => p.ClientId);
                 entity.HasQueryFilter(c => !c.IsDeleted);
             });
+        }
+        private void AltPointContext_SavingChanges(object sender, SaveChangesEventArgs e) 
+        {
+            var objectContext = (AltPointContext)sender;
+
+            var modifiedEntities = objectContext.ChangeTracker.Entries()
+                .Where(c => c.State is EntityState.Added or EntityState.Modified or EntityState.Deleted);
+
+            foreach (var entry in modifiedEntities)
+            {
+                if (entry.Entity is AuditableEntity auditableEntity)
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            auditableEntity.CreateAt = DateTime.UtcNow;
+                            continue;
+                        case EntityState.Modified:
+                            auditableEntity.UpdatedAt = DateTime.UtcNow;
+                            continue;
+                        case EntityState.Deleted:
+                            auditableEntity.DeletedAt = DateTime.UtcNow;
+                            auditableEntity.IsDeleted = true;
+                            continue;
+                    }
+                }
+            }
         }
     }
 }

@@ -2,6 +2,8 @@
 using AltPoint.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace AltPoint.Domain.Entities
 {
     public class Job : AuditableEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public JobType? Type { get; set; }
         public DateTime DateEmp { get; set; }
