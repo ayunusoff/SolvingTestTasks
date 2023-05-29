@@ -8,7 +8,7 @@ namespace AltPoint.Domain.Entities
     public class Passport : AuditableEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public Guid Id { get; set; }
         public string Series { get; set; } = null!;
         public string Number { get; set; } = null!;

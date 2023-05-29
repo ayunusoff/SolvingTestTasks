@@ -17,7 +17,6 @@ namespace AltPoint.Domain.Entities
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
-        public Guid ParentId { get; set; }
         public ICollection<Client> Parents { get; set; } = null!;
     }
 }

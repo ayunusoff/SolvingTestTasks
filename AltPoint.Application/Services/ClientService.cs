@@ -48,7 +48,7 @@ namespace AltPoint.Application.Services
             if (client is null)
                 throw new NullReferenceException($"client с ID:{id} не существует!");
 
-            client.Delete(DateTime.UtcNow);
+            _clientRepo.Remove(id);
         }
     }
 }

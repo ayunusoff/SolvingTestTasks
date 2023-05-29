@@ -21,9 +21,9 @@ namespace AltPoint.Domain.Entities
         public double MonIncome { get; set; }
         public string? Tin { get; set; }
         public Guid FactAddressId { get; set; }
-        public Address? FactAddress { get; set; }
+        public Address FactAddress { get; set; } = null!;
         public Guid JurAddressId { get; set; }
-        public Address? JurAddress { get; set; }
+        public Address JurAddress { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public Guid ClientId { get; set; }
 

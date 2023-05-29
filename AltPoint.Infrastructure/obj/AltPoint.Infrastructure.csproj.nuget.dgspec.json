@@ -1,35 +1,47 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj": {}
+    "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\AltPoint.Application.csproj": {
+    "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\AltPoint.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\AltPoint.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\AltPoint.Application.csproj",
         "projectName": "AltPoint.Application",
-        "projectPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\AltPoint.Application.csproj",
-        "packagesPath": "C:\\Users\\Artem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\obj\\",
+        "projectPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\AltPoint.Application.csproj",
+        "packagesPath": "C:\\Users\\Warrior\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Artem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Warrior\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\AltPoint.Domain.csproj": {
-                "projectPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\AltPoint.Domain.csproj"
+              "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\AltPoint.Domain.csproj": {
+                "projectPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\AltPoint.Domain.csproj"
               }
             }
           }
@@ -77,24 +89,36 @@
         }
       }
     },
-    "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\AltPoint.Domain.csproj": {
+    "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\AltPoint.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\AltPoint.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\AltPoint.Domain.csproj",
         "projectName": "AltPoint.Domain",
-        "projectPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\AltPoint.Domain.csproj",
-        "packagesPath": "C:\\Users\\Artem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Domain\\obj\\",
+        "projectPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\AltPoint.Domain.csproj",
+        "packagesPath": "C:\\Users\\Warrior\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Artem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Warrior\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -132,32 +156,44 @@
         }
       }
     },
-    "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj": {
+    "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj",
         "projectName": "AltPoint.Infrastructure",
-        "projectPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Artem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Infrastructure\\AltPoint.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Warrior\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Artem\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Warrior\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
+          "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\AltPoint.Application.csproj": {
-                "projectPath": "C:\\Users\\Artem\\source\\repos\\AltPoint\\AltPoint.Application\\AltPoint.Application.csproj"
+              "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\AltPoint.Application.csproj": {
+                "projectPath": "C:\\Users\\Warrior\\Desktop\\ap\\SolvingTestTasks\\AltPoint.Application\\AltPoint.Application.csproj"
               }
             }
           }

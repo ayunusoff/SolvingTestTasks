@@ -26,13 +26,18 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Client>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<Address>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<Job>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<Passport>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<Document>().HasQueryFilter(c => !c.IsDeleted);
+
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("Id");
                 entity.HasOne(c => c.Passport)
                     .WithOne(p => p.Client)
                     .HasForeignKey<Passport>(p => p.ClientId);
-                entity.HasQueryFilter(c => !c.IsDeleted);
             });
         }
         private void AltPointContext_SavingChanges(object sender, SaveChangesEventArgs e) 

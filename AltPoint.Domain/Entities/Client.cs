@@ -32,16 +32,10 @@ namespace AltPoint.Domain.Entities
         public Guid? RegAddressId { get; set; }
         public Address RegAddress { get; set; } = null!;
         public ICollection<Job>? Jobs { get; set; } 
-
         public int CurWorkExp { get; set; }
         public TypeEducation TypeEducation { get; set; }
         public double MonIncome { get; set; }
         public double MonExpenses { get; set; }
         public ICollection<Communication> Communications { get; set; } = null!;
-        public void Delete(DateTime deleteDate)
-        {
-            IsDeleted = true;
-            DeletedAt = deleteDate;
-        }
     }
 }

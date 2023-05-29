@@ -1,8 +1,5 @@
 using AltPoint.Application;
-using AltPoint.Application.Mapping;
-using AltPoint.Application.Services;
 using AltPoint.Infrastructure.Persistance.EFCore;
-using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
