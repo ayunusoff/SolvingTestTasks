@@ -61,11 +61,11 @@ namespace AltPoint.Api.Controllers
         }
 
         [HttpDelete("{clientId}")]
-        public IActionResult Delete(Guid clientId)
+        public async Task<IActionResult> Delete(Guid clientId)
         {
             try
             {
-                _clientService.DeleteClient(clientId);
+                await _clientService.DeleteClient(clientId);
 
                 return Ok("Клиент мягко удален");
             }

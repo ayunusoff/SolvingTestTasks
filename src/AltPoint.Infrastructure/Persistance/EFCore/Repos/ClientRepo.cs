@@ -52,19 +52,20 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
         public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, List<string>? SortDir, int Limit, int Page, string? Search)
         {
             IQueryable<Client> clientsQuery = _context.Clients.AsNoTracking()
-                .Skip(Limit * (Page - 1))
-                .Take(Limit);
+                ;
             if (Search != null)
-                clientsQuery.Search(Search);
+                clientsQuery = clientsQuery.Search(Search);
             if (SortBy != null && SortDir != null)
-                return clientsQuery.Sort(SortBy!, SortDir!);
+                return clientsQuery.Skip(Limit * (Page - 1))
+                .Take(Limit).ToList().Sort(SortBy!, SortDir!);
 
-            return await clientsQuery.ToListAsync();
+            return await clientsQuery.Skip(Limit * (Page - 1))
+                .Take(Limit).ToListAsync();
         }
 
-        public void Remove(Guid id)
+        public void Remove(Client client)
         {
-            throw new NotImplementedException();
+            _context.Remove(client);
         }
 
         public async Task<int> SaveChanges()

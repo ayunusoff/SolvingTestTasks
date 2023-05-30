@@ -24,7 +24,7 @@ namespace AltPoint.Application.Mapping
             CreateMap<Communication, CommunicationResponse>().ReverseMap();
             CreateMap<Passport, PassportResponse>().ReverseMap();
             CreateMap<Client, SpouseResponse>().ReverseMap();
-            CreateMap<Client, ClientResponse>();
+            CreateMap<Client, ClientResponse>().ReverseMap();
         }
     }
 }

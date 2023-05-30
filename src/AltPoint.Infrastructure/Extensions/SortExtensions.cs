@@ -1,12 +1,5 @@
-﻿using AltPoint.Domain.Entities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AltPoint.Infrastructure.Extensions
 {
@@ -34,26 +27,22 @@ namespace AltPoint.Infrastructure.Extensions
         }
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> items, string searchItem) where TEntity : class // TODO
         {
-            IQueryable<TEntity>? temp = null;
-            Type type = typeof(TEntity);
+            var t = Expression.Parameter(typeof(TEntity));
+            Expression body = Expression.Constant(false);
 
-            var propsValue = type.GetProperties()
-                .Where(p => p.PropertyType == typeof(string))
-                .Select(p => p.Name);
+            var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            var toStringMethod = typeof(object).GetMethod("ToString");
 
-            var x = Expression.Parameter(type, "x");
-            Expression call = Expression.Constant(false);
-            var contains = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-            var query = Expression.Constant(searchItem);
+            var properties = typeof(TEntity).GetProperties().Where(property => property.PropertyType == typeof(string));
+            foreach (var property in properties)
+            {
+                //var stringValue = Expression.Call(Expression.Property(t, property.Name), toStringMethod!);
+                var nextExpression = Expression.Call(Expression.MakeMemberAccess(t, typeof(TEntity).GetProperty(property.Name)!), containsMethod!, Expression.Constant(searchItem));
 
-            call = propsValue.Aggregate(call,
-                (current, s) => Expression.OrElse(current,
-                    Expression.Call(Expression.MakeMemberAccess(x, typeof(TEntity).GetProperty(s)!),
-                        contains!, query)));
-            var expr = Expression.Lambda<Func<TEntity, bool>>(call, x);
-
-            temp = items.Where(expr);
-            return temp ?? items;
+                body = Expression.Or(body, nextExpression);
+            }
+            //var la = Expression.Lambda<Func<TEntity, bool>>(body, t).Compile();
+            return items.Where(Expression.Lambda<Func<TEntity, bool>>(body, t));
         }
     }
 }

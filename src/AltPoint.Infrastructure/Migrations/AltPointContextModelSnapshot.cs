@@ -159,7 +159,8 @@ namespace AltPoint.Infrastructure.Migrations
 
                     b.HasIndex("RegAddressId");
 
-                    b.HasIndex("SpouseId");
+                    b.HasIndex("SpouseId")
+                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -341,8 +342,9 @@ namespace AltPoint.Infrastructure.Migrations
                         .HasForeignKey("RegAddressId");
 
                     b.HasOne("AltPoint.Domain.Entities.Client", "Spouse")
-                        .WithMany()
-                        .HasForeignKey("SpouseId");
+                        .WithOne()
+                        .HasForeignKey("AltPoint.Domain.Entities.Client", "SpouseId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("LivingAddress");
 

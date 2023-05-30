@@ -62,14 +62,15 @@ namespace AltPoint.Application.Services
             };
             return paginationResponse;
         }
-        public void DeleteClient(Guid id)
+        public async Task DeleteClient(Guid id)
         {
             var client = _clientRepo.GetById(id);
 
             if (client is null)
                 throw new NullReferenceException($"client с ID:{id} не существует!");
 
-            _clientRepo.Remove(id);
+            _clientRepo.Remove(client);
+            await _clientRepo.SaveChanges();
         }
     }
 }

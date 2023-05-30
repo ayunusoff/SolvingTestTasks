@@ -38,6 +38,10 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 entity.HasOne(c => c.Passport)
                     .WithOne(p => p.Client)
                     .HasForeignKey<Passport>(p => p.ClientId);
+                entity.HasOne(c => c.Spouse)
+                   .WithOne()
+                   .HasForeignKey<Client>(s => s.SpouseId).IsRequired(false)
+                   .OnDelete(DeleteBehavior.SetNull);
             });
         }
         private void AltPointContext_SavingChanges(object sender, SaveChangesEventArgs e) 
@@ -55,14 +59,15 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                     {
                         case EntityState.Added:
                             auditableEntity.CreateAt = DateTime.UtcNow;
-                            continue;
+                            break;
                         case EntityState.Modified:
                             auditableEntity.UpdatedAt = DateTime.UtcNow;
-                            continue;
+                            break;
                         case EntityState.Deleted:
                             auditableEntity.DeletedAt = DateTime.UtcNow;
                             auditableEntity.IsDeleted = true;
-                            continue;
+                            entry.State = EntityState.Modified;
+                            break;
                     }
                 }
             }
