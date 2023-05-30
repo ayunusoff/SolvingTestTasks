@@ -1,6 +1,7 @@
 ﻿using AltPoint.Domain.Common;
 using AltPoint.Domain.Entities;
 using AltPoint.Domain.Interfaces;
+using AltPoint.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -31,18 +32,34 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public Client GetById(Guid id)
         {
-            return _context.Clients.FirstOrDefault(c => c.Id == id)!;
+            Client client = _context.Clients
+                .Include(c => c.LivingAddress)
+                .Include(c => c.RegAddress)
+                .Include(c => c.Passport)
+                .Include(c => c.Spouse)
+                .FirstOrDefault(c => c.Id == id)!;
+
+            if (client.Spouse != null)
+            { 
+                _context.Entry(client.Spouse).Reference(s => s.Passport).Load();
+                _context.Entry(client.Spouse).Reference(s => s.LivingAddress).Load();
+                _context.Entry(client.Spouse).Reference(s => s.RegAddress).Load();
+            }
+
+            return client;
         }
 
-        public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, string SortDir, int Limit, int Page, string? Search)
+        public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, List<string>? SortDir, int Limit, int Page, string? Search)
         {
-            IEnumerable<Client> clients = await GetAll();
-            return clients;
-            //return parameters.SortDir == "asc" ? clients.OrderBy(c => c.GetType().GetProperty(SortedBy!))
-            //    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-            //    .Take(parameters.PageSize) : clients.OrderByDescending(c => c.GetType().GetProperty(parameters.SortedBy!))
-            //    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-            //    .Take(parameters.PageSize);
+            IQueryable<Client> clientsQuery = _context.Clients.AsNoTracking()
+                .Skip(Limit * (Page - 1))
+                .Take(Limit);
+            if (Search != null)
+                clientsQuery.Search(Search);
+            if (SortBy != null && SortDir != null)
+                return clientsQuery.Sort(SortBy!, SortDir!);
+
+            return await clientsQuery.ToListAsync();
         }
 
         public void Remove(Guid id)

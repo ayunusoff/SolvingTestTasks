@@ -2,7 +2,7 @@
 
 namespace AltPoint.Application.DTOs.Response
 {
-    public class ClientResponse
+    public class SpouseResponse
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
@@ -13,7 +13,6 @@ namespace AltPoint.Application.DTOs.Response
         public AddressResponse? LivingAddress { get; set; }
         public AddressResponse? RegAddress { get; set; }
         public List<ChildResponse>? Children { get; set; }
-        public SpouseResponse? Spouse { get; set; }
         public List<JobResponse>? Jobs { get; set; }
         public TypeEducation? TypeEducation { get; set; }
         public double MonIncome { get; set; }

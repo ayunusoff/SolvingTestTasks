@@ -17,17 +17,28 @@ namespace AltPoint.Api.Controllers
         {
             _clientService = clientService;
         }
+
+        //https://localhost:7038/api/Client?SortQuery[0].SortBy=surname&SortQuery[0].SortDir=desc&Limit=10&Page=1&Search
+        //https://localhost:7038/api/Client?Limit=10&Page=1&Search&SortQuery[0].SortBy=dob&SortQuery[0].SortDir=Desc&SortQuery[1].SortBy=MonIncome&SortQuery[1].SortDir=Desc
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] ClientQueryRequest parameters)
         {
-            var clients = _clientService.GetAllClientsWithParam(parameters);
+            ClientPaginationResponse clients = await _clientService.GetAllClientsWithParam(parameters);
             return Ok(clients);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{clientId}")]
+        public IActionResult GetById(Guid clientId)
         {
-            return "value";
+            try
+            {
+                ClientResponse client = _clientService.GetClient(clientId);
+                return Ok(client);
+            }
+            catch(NullReferenceException e) 
+            {
+                return NotFound(e.Message);
+            } 
         }
 
         [HttpPost]

@@ -15,7 +15,7 @@ namespace AltPoint.Application.DTOs.Request
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
-        public DateTime DateOfBirth { get; set; }
+        public DateTime dob { get; set; }
         public PassportRequest? Passport { get; set; }
         public AddressRequest? LivingAddress { get; set; }
         public AddressRequest? RegAddress { get; set; }

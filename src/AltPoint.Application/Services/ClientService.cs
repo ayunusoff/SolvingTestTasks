@@ -21,33 +21,46 @@ namespace AltPoint.Application.Services
             _mapper = mapper;
 
         }
-        public ClientResponse GetClient(Guid id) //TODO
+        public ClientResponse GetClient(Guid id)
         {
             var client = _clientRepo.GetById(id);
+
             if (client is null)
                 throw new NullReferenceException($"client с ID:{id} не существует!");
-            return new ClientResponse();
+
+            return _mapper.Map<ClientResponse>(client);
         }
         public async Task<Guid> PostClient(ClientRequest clientRequest)
         {
             await _validator.ValidateAndThrowAsync(clientRequest);
-            //Client spouse = _mapper.Map<Client>(clientRequest.Spouse);
             Client client = _mapper.Map<Client>(clientRequest);
-            //client.Spouse = spouse;
+
             await _clientRepo.Add(client);
             if (client.Spouse != null)
             { 
                 client.SpouseId = client.Spouse.Id;
                 await _clientRepo.Add(client.Spouse!);
             }
+
             await _clientRepo.SaveChanges();
-            return Guid.NewGuid();
+            return client.Id;
         }
         public async Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters) //TODO
         {
             ClientPaginationResponse response = new ClientPaginationResponse();
-            await _clientRepo.GetClientsWithParams(parameters.SortBy, parameters.SortDir, parameters.Limit, parameters.Page, parameters.Search);
-            return response;
+            var sortBy = parameters.SortQuery?.Select(sq => sq.SortBy).ToList();
+            var sortDir = parameters.SortQuery?.Select(sq => sq.SortDir).ToList();
+
+            var clients = await _clientRepo.GetClientsWithParams(sortBy, sortDir, parameters.Limit, parameters.Page, parameters.Search);
+            var clientResponse = _mapper.Map<List<ClientResponse>>(clients);
+            ClientPaginationResponse paginationResponse = new ClientPaginationResponse
+            {
+                Limit = parameters.Limit,
+                Page = parameters.Page,
+                Total = 100, // TODO
+                clients = clientResponse,
+            };
+            return paginationResponse;
         }
         public void DeleteClient(Guid id)
         {

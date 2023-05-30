@@ -20,9 +20,8 @@ namespace AltPoint.Domain.Entities
         public string Surname { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
         public DateTime dob { get; set; }
-
         public ICollection<Child>? Сhildrens { get; set; }
-        public Guid SpouseId { get; set; }
+        public Guid? SpouseId { get; set; }
         public Client? Spouse { get; set; }
         public Guid? LivingAddressId { get; set; }
         public Address LivingAddress { get; set;} = null!;

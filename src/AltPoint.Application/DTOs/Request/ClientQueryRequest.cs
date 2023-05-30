@@ -8,10 +8,15 @@ namespace AltPoint.Application.DTOs.Request
 {
     public class ClientQueryRequest
     {
-        public List<string>? SortBy { get; set; }
-        public string SortDir { get; set; } = "asc";
+        public List<SortQuery>? SortQuery { get; set; }
         public int Limit { get; set; }
         public int Page { get; set; }
         public string? Search { get; set; }
+    }
+    public class SortQuery
+    {
+        public string SortBy { get; set; } = null!;
+        public string SortDir { get; set; } = null!;
+
     }
 }

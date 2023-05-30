@@ -1,6 +1,7 @@
-.vs
+.vs/
 .vscode/
 
+src/.vs/
 AltPoint.Api/bin/
 AltPoint.Application/bin/
 AltPoint.Domain/bin/
