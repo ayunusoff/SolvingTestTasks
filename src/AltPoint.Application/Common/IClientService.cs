@@ -7,9 +7,9 @@ namespace AltPoint.Application.Common
     {
         Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters);
         Task DeleteClient(Guid id);
-        ClientResponse GetClient(Guid id);
+        ClientWithSpouseResponse GetClient(Guid id);
         Task<Guid> PostClient(ClientRequest client);
         Task PatchClient(ClientRequest client);
-        Task UpdateClient(ClientRequest client);
+        Task UpdateClient(Guid id, ClientRequest client);
     }
 }

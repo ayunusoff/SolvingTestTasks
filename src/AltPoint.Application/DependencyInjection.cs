@@ -16,6 +16,7 @@ namespace AltPoint.Application
         {
             services.AddScoped<IValidator<ClientRequest>, ClientValidator>();
             services.AddTransient<IClientService, ClientService>();
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ClientMap());

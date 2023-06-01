@@ -36,6 +36,18 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .IgnoreQueryFilters().Where(c => c.IsDeleted).AsEnumerable();
         }
 
+
+        public Client GetByIdWithoutTracking(Guid id)
+        {
+            return _context.Clients
+                .Include(c => c.LivingAddress)
+                .Include(c => c.RegAddress)
+                .Include(c => c.Passport)
+                .Include(c => c.Spouse)
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Id == id)!;
+        }
+
         public Client GetById(Guid id)
         {
             Client client = _context.Clients
@@ -45,7 +57,7 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .Include(c => c.Spouse)
                 .FirstOrDefault(c => c.Id == id)!;
 
-            if (client.Spouse != null)
+            if (client?.Spouse != null)
             { 
                 _context.Entry(client.Spouse).Reference(s => s.Passport).Load();
                 _context.Entry(client.Spouse).Reference(s => s.LivingAddress).Load();
@@ -61,15 +73,10 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .Include(c => c.LivingAddress)
                 .Include(c => c.RegAddress)
                 .Include(c => c.Passport)
-                .Include(c => c.Spouse);
-
-            foreach(var client in clientsQuery)
-                if (client.Spouse != null)
-                {
-                    _context.Entry(client.Spouse).Reference(s => s.Passport).Load();
-                    _context.Entry(client.Spouse).Reference(s => s.LivingAddress).Load();
-                    _context.Entry(client.Spouse).Reference(s => s.RegAddress).Load();
-                }
+                .Include(c => c.Jobs)
+                    .ThenInclude(j => j.FactAddress)
+                .Include(c => c.Jobs)
+                    .ThenInclude(j => j.JurAddress);
 
             int count = await _context.Clients.CountAsync();
 
@@ -108,7 +115,7 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public async Task Update(Client client)
         {
-            await _context.AddAsync(client);
+            _context.Update(client);
         }
         public async Task PartialUpdate()
         {

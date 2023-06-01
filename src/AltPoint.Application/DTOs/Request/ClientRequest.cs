@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace AltPoint.Application.DTOs.Request
 {
-    [AutoMap(typeof(Client))]
     public class ClientRequest
     {
         public string Name { get; set; } = null!;
@@ -28,7 +27,7 @@ namespace AltPoint.Application.DTOs.Request
         public List<JobRequest>? Jobs { get; set; }
         public TypeEducation? TypeEducation { get; set; }
         public double MonIncome { get; set; }
-        public double MonExpences { get; set; }
+        public double MonExpenses { get; set; }
         public List<Guid>? DocumentIds { get; set; }
         public List<CommunicationRequest>? Communications { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using AltPoint.Application.Common;
+using AltPoint.Application.DTOs.Errors;
 using AltPoint.Application.DTOs.Request;
 using AltPoint.Application.DTOs.Response;
 using AltPoint.Application.Services;
@@ -43,14 +44,14 @@ namespace AltPoint.Api.Controllers
         {
             try
             {
-                ClientResponse client = _clientService.GetClient(clientId);
+                ClientWithSpouseResponse client = _clientService.GetClient(clientId);
 
                 return Ok(client);
             }
-            catch (NullReferenceException e) 
+            catch (ArgumentNullException)    
             {
-                return NotFound(e.Message);
-            } 
+                return NotFound(new Error { status = 404, code = ErrorCode.ENTITY_NOT_FOUND });
+            }
         }
 
         [HttpPost]
@@ -62,9 +63,10 @@ namespace AltPoint.Api.Controllers
 
                 return Ok(id);
             }
-            catch (ValidationException)
+            catch (ValidationException e)
             {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                return new JsonResult(GetValidationErrResponse(e));
             }
             catch (Exception e) 
             {
@@ -79,9 +81,10 @@ namespace AltPoint.Api.Controllers
             {
                 return Ok();
             }
-            catch (ValidationException)
+            catch (ValidationException e)
             {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                return new JsonResult(GetValidationErrResponse(e));
             }
             catch (Exception e)
             {
@@ -90,15 +93,17 @@ namespace AltPoint.Api.Controllers
         }
 
         [HttpPut("{clientId}")]
-        public IActionResult Put(Guid clientId, [FromBody] ClientRequest clientRequest)
+        public async Task<IActionResult> Put(Guid clientId, [FromBody] ClientRequest clientRequest)
         {
             try
             {
+                await _clientService.UpdateClient(clientId, clientRequest);
                 return Ok();
             }
-            catch (ValidationException)
+            catch (ValidationException e)
             {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                return new JsonResult(GetValidationErrResponse(e));
             }
             catch (Exception e)
             {
@@ -115,10 +120,21 @@ namespace AltPoint.Api.Controllers
 
                 return Ok("Клиент мягко удален");
             }
-            catch (NullReferenceException ex)
+            catch (ArgumentNullException)
             {
-                return NotFound(ex.Message);
+                return NotFound(new Error { status = 404, code = ErrorCode.ENTITY_NOT_FOUND });
             }
+        }
+
+        private ValidationError GetValidationErrResponse(ValidationException e)
+        {
+            var errors = e.Errors.Select(x => new ValidationExceptions
+            {
+                field = x.PropertyName,
+                rule = x.ErrorCode,
+                message = x.ErrorMessage
+            }).ToList();
+            return new ValidationError { status = (int)HttpStatusCode.UnprocessableEntity, code = ErrorCode.VALIDATION_EXCEPTION, exceptions = errors };
         }
     }
 }

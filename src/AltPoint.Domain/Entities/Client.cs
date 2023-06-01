@@ -25,7 +25,6 @@ namespace AltPoint.Domain.Entities
         public Client? Spouse { get; set; }
         public Guid? LivingAddressId { get; set; }
         public Address LivingAddress { get; set;} = null!;
-        public Guid PassportId { get; set; }
         public Passport Passport { get; set; } = null!;
         public ICollection<Document> Documents { get; set; } = null!;
         public Guid? RegAddressId { get; set; }

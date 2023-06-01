@@ -11,7 +11,7 @@ namespace AltPoint.Application.DTOs.Response
         public int Limit { get; set; }
         public int Page { get; set; }
         public int Total { get; set; }
-        public IEnumerable<ClientResponse> clients { get; set; }
+        public IEnumerable<ClientResponse> clients { get; set; } = null!;
 
     }
 }

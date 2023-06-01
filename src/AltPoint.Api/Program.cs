@@ -1,5 +1,8 @@
+using AltPoint.Api.Handlers;
 using AltPoint.Application;
 using AltPoint.Infrastructure.Persistance.EFCore;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +15,7 @@ builder.Services.AddApplication()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
+app.ConfigureExceptionHandler();
 
 app.UseAuthorization();
 

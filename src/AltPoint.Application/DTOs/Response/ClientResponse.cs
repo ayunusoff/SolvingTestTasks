@@ -1,4 +1,9 @@
 ﻿using AltPoint.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AltPoint.Application.DTOs.Response
 {
@@ -13,11 +18,10 @@ namespace AltPoint.Application.DTOs.Response
         public AddressResponse? LivingAddress { get; set; }
         public AddressResponse? RegAddress { get; set; }
         public List<ChildResponse>? Children { get; set; }
-        public SpouseResponse? Spouse { get; set; }
         public List<JobResponse>? Jobs { get; set; }
         public TypeEducation? TypeEducation { get; set; }
         public double MonIncome { get; set; }
-        public double MonExpences { get; set; }
+        public double MonExpenses { get; set; }
         public List<Guid>? Documents { get; set; }
         public List<CommunicationResponse>? Communications { get; set; }
     }

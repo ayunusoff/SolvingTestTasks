@@ -22,14 +22,14 @@ namespace AltPoint.Application.Services
             _mapper = mapper;
         }
 
-        public ClientResponse GetClient(Guid id)
+        public ClientWithSpouseResponse GetClient(Guid id)
         {
             Client client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new NullReferenceException($"client с ID:{id} не найден!");
+                throw new ArgumentNullException($"client с ID:{id} не найден!");
 
-            return _mapper.Map<ClientResponse>(client);
+            return _mapper.Map<ClientWithSpouseResponse>(client);
         }
 
         public async Task<Guid> PostClient(ClientRequest clientRequest)
@@ -66,7 +66,7 @@ namespace AltPoint.Application.Services
             var client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new NullReferenceException($"client с ID:{id} не найден!");
+                throw new ArgumentNullException($"client с ID:{id} не найден!");
 
             _clientRepo.Remove(client);
 
@@ -79,11 +79,17 @@ namespace AltPoint.Application.Services
             await _clientRepo.SaveChanges();
         }
 
-        public async Task UpdateClient(ClientRequest clientRequest)
+        public async Task UpdateClient(Guid id, ClientRequest clientRequest)
         {
-            await _validator.ValidateAndThrowAsync(clientRequest);
-            Client client = _mapper.Map<Client>(clientRequest);
+            //Client client = _clientRepo.GetById(id);//
 
+            //if (client is null)
+             //   throw new ArgumentNullException($"client с ID:{id} не найден!");
+
+            await _validator.ValidateAndThrowAsync(clientRequest);
+
+            Client client = _mapper.Map<Client>(clientRequest);
+            client.Id = id;
             await _clientRepo.Update(client);
             await _clientRepo.SaveChanges();
         }

@@ -37,7 +37,8 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 entity.HasKey(e => e.Id).HasName("Id");
                 entity.HasOne(c => c.Passport)
                     .WithOne(p => p.Client)
-                    .HasForeignKey<Passport>(p => p.ClientId);
+                    .HasForeignKey<Passport>(p => p.ClientId)
+                    .IsRequired();
                 entity.HasOne(c => c.Spouse)
                    .WithOne()
                    .HasForeignKey<Client>(s => s.SpouseId).IsRequired(false)

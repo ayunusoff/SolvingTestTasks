@@ -7,7 +7,7 @@ namespace AltPoint.Application.Validations
     {
         public ClientValidator() 
         {
-            RuleFor(c => c.MonExpences).GreaterThanOrEqualTo(0);
+            RuleFor(c => c.MonExpenses).GreaterThanOrEqualTo(0);
 
             RuleFor(c => c.MonIncome).GreaterThanOrEqualTo(0);
 
