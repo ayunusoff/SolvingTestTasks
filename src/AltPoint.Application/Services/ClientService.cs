@@ -14,28 +14,32 @@ namespace AltPoint.Application.Services
         public readonly IClientRepo _clientRepo;
         public readonly IValidator<ClientRequest> _validator;
         public readonly IMapper _mapper;
+
         public ClientService(IClientRepo clientRepo, IValidator<ClientRequest> validator, IMapper mapper)
         {
             _clientRepo = clientRepo;
             _validator = validator;
             _mapper = mapper;
-
         }
+
         public ClientResponse GetClient(Guid id)
         {
-            var client = _clientRepo.GetById(id);
+            Client client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new NullReferenceException($"client с ID:{id} не существует!");
+                throw new NullReferenceException($"client с ID:{id} не найден!");
 
             return _mapper.Map<ClientResponse>(client);
         }
+
         public async Task<Guid> PostClient(ClientRequest clientRequest)
         {
             await _validator.ValidateAndThrowAsync(clientRequest);
+
             Client client = _mapper.Map<Client>(clientRequest);
 
             await _clientRepo.Add(client);
+
             if (client.Spouse != null)
             { 
                 client.SpouseId = client.Spouse.Id;
@@ -45,31 +49,42 @@ namespace AltPoint.Application.Services
             await _clientRepo.SaveChanges();
             return client.Id;
         }
-        public async Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters) //TODO
+
+        public async Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters)
         {
-            ClientPaginationResponse response = new ClientPaginationResponse();
             var sortBy = parameters.SortQuery?.Select(sq => sq.SortBy).ToList();
             var sortDir = parameters.SortQuery?.Select(sq => sq.SortDir).ToList();
 
             var clients = await _clientRepo.GetClientsWithParams(sortBy, sortDir, parameters.Limit, parameters.Page, parameters.Search);
-            var clientResponse = _mapper.Map<List<ClientResponse>>(clients);
-            ClientPaginationResponse paginationResponse = new ClientPaginationResponse
-            {
-                Limit = parameters.Limit,
-                Page = parameters.Page,
-                Total = 100, // TODO
-                clients = clientResponse,
-            };
-            return paginationResponse;
+            var clientResponse = _mapper.Map<ClientPaginationResponse>(clients);
+
+            return clientResponse;
         }
+
         public async Task DeleteClient(Guid id)
         {
             var client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new NullReferenceException($"client с ID:{id} не существует!");
+                throw new NullReferenceException($"client с ID:{id} не найден!");
 
             _clientRepo.Remove(client);
+
+            await _clientRepo.SaveChanges();
+        }
+
+        public async Task PatchClient(ClientRequest client) // TODO
+        {
+            await _clientRepo.PartialUpdate();
+            await _clientRepo.SaveChanges();
+        }
+
+        public async Task UpdateClient(ClientRequest clientRequest)
+        {
+            await _validator.ValidateAndThrowAsync(clientRequest);
+            Client client = _mapper.Map<Client>(clientRequest);
+
+            await _clientRepo.Update(client);
             await _clientRepo.SaveChanges();
         }
     }

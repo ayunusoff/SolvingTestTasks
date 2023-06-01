@@ -1,11 +1,7 @@
 ﻿using AltPoint.Application.DTOs.Request;
 using AltPoint.Domain.Enums;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace AltPoint.Application.Validations
 {
@@ -13,13 +9,18 @@ namespace AltPoint.Application.Validations
     {
         public CommunicationValidator()
         {
-            RuleFor(c => c.Type).IsInEnum();
+            When(c => c.Type == CommunicationType.phone, 
+                () => RuleFor(c => c.Value)
+                .NotEmpty()
+                .MinimumLength(11)
+                .MaximumLength(12)
+                .Matches(new Regex(@"^((\+7|7|8)+([0-9]){10})$"))); 
 
-            RuleFor(c => c.Value).NotNull();
-
-            When(c => c.Type == CommunicationType.phone, () => RuleFor(c => c.Value).NotNull()); // TODO
-
-            When(c => c.Type == CommunicationType.email, () => RuleFor(c => c.Value).EmailAddress().NotNull());
+            When(c => c.Type == CommunicationType.email, 
+                () => RuleFor(c => c.Value)
+                .NotEmpty()
+                .EmailAddress()
+                .NotNull());
         }
     }
 }

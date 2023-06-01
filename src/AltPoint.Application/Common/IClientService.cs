@@ -9,5 +9,7 @@ namespace AltPoint.Application.Common
         Task DeleteClient(Guid id);
         ClientResponse GetClient(Guid id);
         Task<Guid> PostClient(ClientRequest client);
+        Task PatchClient(ClientRequest client);
+        Task UpdateClient(ClientRequest client);
     }
 }

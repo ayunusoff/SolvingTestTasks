@@ -4,7 +4,9 @@ using AltPoint.Application.DTOs.Response;
 using AltPoint.Application.Services;
 using AltPoint.Domain.Common;
 using AltPoint.Domain.Entities;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace AltPoint.Api.Controllers
 {
@@ -13,6 +15,7 @@ namespace AltPoint.Api.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
+
         public ClientController(IClientService clientService)
         {
             _clientService = clientService;
@@ -23,8 +26,16 @@ namespace AltPoint.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] ClientQueryRequest parameters)
         {
-            ClientPaginationResponse clients = await _clientService.GetAllClientsWithParam(parameters);
-            return Ok(clients);
+            try
+            {
+                ClientPaginationResponse clients = await _clientService.GetAllClientsWithParam(parameters);
+
+                return Ok(clients);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("{clientId}")]
@@ -33,9 +44,10 @@ namespace AltPoint.Api.Controllers
             try
             {
                 ClientResponse client = _clientService.GetClient(clientId);
+
                 return Ok(client);
             }
-            catch(NullReferenceException e) 
+            catch (NullReferenceException e) 
             {
                 return NotFound(e.Message);
             } 
@@ -47,7 +59,29 @@ namespace AltPoint.Api.Controllers
             try
             {
                 Guid id = await _clientService.PostClient(clientRequest)!;
+
                 return Ok(id);
+            }
+            catch (ValidationException)
+            {
+                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
+            }
+            catch (Exception e) 
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPatch("{clientId}")]
+        public IActionResult Patch(Guid clientId, [FromBody] string value)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (ValidationException)
+            {
+                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
             }
             catch (Exception e)
             {
@@ -55,9 +89,21 @@ namespace AltPoint.Api.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{clientId}")]
+        public IActionResult Put(Guid clientId, [FromBody] ClientRequest clientRequest)
         {
+            try
+            {
+                return Ok();
+            }
+            catch (ValidationException)
+            {
+                return StatusCode((int)HttpStatusCode.UnprocessableEntity);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{clientId}")]

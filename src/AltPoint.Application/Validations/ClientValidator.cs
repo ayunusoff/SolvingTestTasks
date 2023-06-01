@@ -1,5 +1,4 @@
 ﻿using AltPoint.Application.DTOs.Request;
-using AltPoint.Domain.Enums;
 using FluentValidation;
 
 namespace AltPoint.Application.Validations
@@ -12,16 +11,17 @@ namespace AltPoint.Application.Validations
 
             RuleFor(c => c.MonIncome).GreaterThanOrEqualTo(0);
 
+            RuleFor(c => c.TypeEducation).NotEmpty().IsInEnum();
+
             RuleFor(c => c.LivingAddress).SetValidator(new AddressValidator()!);
 
             RuleFor(c => c.RegAddress).SetValidator(new AddressValidator()!);
 
+            RuleFor(c => c.Passport).SetValidator(new PassportValidator()!);
+
             RuleForEach(c => c.Communications).SetValidator(new CommunicationValidator());
 
             RuleForEach(c => c.Jobs).SetValidator(new JobValidator());
-
-            RuleFor(c => c.TypeEducation).IsInEnum();
-
         }
     }
 }

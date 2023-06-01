@@ -10,6 +10,7 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
     public class ClientRepo : IClientRepo
     {
         private readonly AltPointContext _context;
+
         public ClientRepo(AltPointContext context)
         {
             _context = context;
@@ -27,7 +28,12 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public IEnumerable<Client> GetAllSoftDeleted()
         {
-            throw new NotImplementedException();
+            return _context.Clients.AsNoTracking()
+                .Include(c => c.LivingAddress)
+                .Include(c => c.RegAddress)
+                .Include(c => c.Passport)
+                .Include(c => c.Spouse)
+                .IgnoreQueryFilters().Where(c => c.IsDeleted).AsEnumerable();
         }
 
         public Client GetById(Guid id)
@@ -49,18 +55,45 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             return client;
         }
 
-        public async Task<IEnumerable<Client>> GetClientsWithParams(List<string>? SortBy, List<string>? SortDir, int Limit, int Page, string? Search)
+        public async Task<Page> GetClientsWithParams(List<string>? SortBy, List<string>? SortDir, int Limit, int Page, string? Search)
         {
             IQueryable<Client> clientsQuery = _context.Clients.AsNoTracking()
-                ;
+                .Include(c => c.LivingAddress)
+                .Include(c => c.RegAddress)
+                .Include(c => c.Passport)
+                .Include(c => c.Spouse);
+
+            foreach(var client in clientsQuery)
+                if (client.Spouse != null)
+                {
+                    _context.Entry(client.Spouse).Reference(s => s.Passport).Load();
+                    _context.Entry(client.Spouse).Reference(s => s.LivingAddress).Load();
+                    _context.Entry(client.Spouse).Reference(s => s.RegAddress).Load();
+                }
+
+            int count = await _context.Clients.CountAsync();
+
             if (Search != null)
                 clientsQuery = clientsQuery.Search(Search);
-            if (SortBy != null && SortDir != null)
-                return clientsQuery.Skip(Limit * (Page - 1))
-                .Take(Limit).ToList().Sort(SortBy!, SortDir!);
 
-            return await clientsQuery.Skip(Limit * (Page - 1))
-                .Take(Limit).ToListAsync();
+            if (SortBy != null && SortDir != null)
+                return new Page
+                {
+                    Limit = Limit,
+                    PageNum = Page,
+                    Total = count,
+                    clients = clientsQuery.Skip(Limit * (Page - 1))
+                        .Take(Limit).ToList().Sort(SortBy!, SortDir!)
+                };
+
+            return new Page
+            {
+                Limit = Limit,
+                PageNum = Page,
+                Total = count,
+                clients = await clientsQuery.Skip(Limit * (Page - 1))
+                    .Take(Limit).ToListAsync()
+            };
         }
 
         public void Remove(Client client)
@@ -73,9 +106,13 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
             return await _context.SaveChangesAsync();
         }
 
-        public void Update(Client obj)
+        public async Task Update(Client client)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(client);
+        }
+        public async Task PartialUpdate()
+        {
+
         }
     }
 }
