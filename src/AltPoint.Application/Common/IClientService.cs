@@ -10,6 +10,6 @@ namespace AltPoint.Application.Common
         ClientWithSpouseResponse GetClient(Guid id);
         Task<Guid> PostClient(ClientRequest client);
         Task PatchClient(ClientRequest client);
-        Task UpdateClient(Guid id, ClientRequest client);
+        Task UpdateClient(Guid id, ClientResponse clientResponse);
     }
 }

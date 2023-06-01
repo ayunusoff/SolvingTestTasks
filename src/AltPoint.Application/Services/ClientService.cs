@@ -79,18 +79,19 @@ namespace AltPoint.Application.Services
             await _clientRepo.SaveChanges();
         }
 
-        public async Task UpdateClient(Guid id, ClientRequest clientRequest)
+        public async Task UpdateClient(Guid id, ClientResponse clientResponse)
         {
             //Client client = _clientRepo.GetById(id);//
 
             //if (client is null)
-             //   throw new ArgumentNullException($"client с ID:{id} не найден!");
+            //    throw new ArgumentNullException($"client с ID:{id} не найден!");
 
-            await _validator.ValidateAndThrowAsync(clientRequest);
+            //await _validator.ValidateAndThrowAsync(clientResponse);
 
-            Client client = _mapper.Map<Client>(clientRequest);
-            client.Id = id;
+            Client client = _mapper.Map<Client>(clientResponse);
+            //client.Id = id;
             await _clientRepo.Update(client);
+            
             await _clientRepo.SaveChanges();
         }
     }

@@ -93,11 +93,11 @@ namespace AltPoint.Api.Controllers
         }
 
         [HttpPut("{clientId}")]
-        public async Task<IActionResult> Put(Guid clientId, [FromBody] ClientRequest clientRequest)
+        public async Task<IActionResult> Put(Guid clientId, [FromBody] ClientResponse clientResponse)
         {
             try
             {
-                await _clientService.UpdateClient(clientId, clientRequest);
+                await _clientService.UpdateClient(clientId, clientResponse);
                 return Ok();
             }
             catch (ValidationException e)

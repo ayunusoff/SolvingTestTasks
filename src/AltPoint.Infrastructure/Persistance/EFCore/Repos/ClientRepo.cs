@@ -55,6 +55,9 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .Include(c => c.RegAddress)
                 .Include(c => c.Passport)
                 .Include(c => c.Spouse)
+                .Include(c => c.Communications)
+                .Include(c => c.Сhildrens)
+                .AsSplitQuery()
                 .FirstOrDefault(c => c.Id == id)!;
 
             if (client?.Spouse != null)
@@ -115,7 +118,27 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public async Task Update(Client client)
         {
-            _context.Update(client);
+            foreach (var entry in _context.ChangeTracker.Entries())
+                Console.WriteLine(entry);
+
+            _context.Attach(client);
+            //foreach (var entry in _context.ChangeTracker.Entries())
+            //  entry.State = EntityState.Modified;//Console.WriteLine(entry);
+            //foreach (var entry in _context.ChangeTracker.Entries())
+            //    if (entry. == EntityState.Added)
+            //        entry.State = EntityState.Deleted;
+            foreach (var refer in _context.Entry(client).References)
+            { 
+                var valeu = refer == null ? "null" : "Cur";
+                Console.WriteLine($"curValue - {valeu}, {refer.EntityEntry.State}");
+            }
+            foreach (var entry in _context.ChangeTracker.Entries())
+            {
+                Console.WriteLine($"<--- {entry} ---- {entry.CurrentValues} ---->");
+                foreach (var oValue in entry.References)
+                    Console.WriteLine($"<--- {oValue.EntityEntry.State} ---- {oValue.CurrentValue} ---- {entry.Entity} ---->");
+
+            }
         }
         public async Task PartialUpdate()
         {
