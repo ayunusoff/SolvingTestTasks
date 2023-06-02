@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AltPoint.Application.DTOs.Request
+namespace AltPoint.Application.DTOs
 {
-    public class AddressRequest
+    public class AddressDTO
     {
+        public Guid Id { get; set; }
         public string ZipCode { get; set; } = null!;
         public string Country { get; set; } = null!;
         public string Region { get; set; } = null!;

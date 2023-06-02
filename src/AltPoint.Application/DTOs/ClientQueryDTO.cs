@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AltPoint.Application.DTOs.Request
+namespace AltPoint.Application.DTOs
 {
-    public class ClientQueryRequest
+    public class ClientQueryDTO
     {
         public List<SortQuery>? SortQuery { get; set; }
         public int Limit { get; set; }

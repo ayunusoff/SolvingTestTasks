@@ -1,9 +1,9 @@
-﻿using AltPoint.Application.DTOs.Request;
+﻿using AltPoint.Application.DTOs;
 using FluentValidation;
 
 namespace AltPoint.Application.Validations
 {
-    public class ClientValidator : AbstractValidator<ClientRequest>
+    public class ClientValidator : AbstractValidator<ClientDTO>
     {
         public ClientValidator() 
         {

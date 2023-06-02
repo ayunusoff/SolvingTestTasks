@@ -1,10 +1,10 @@
-﻿using AltPoint.Application.DTOs.Request;
+﻿using AltPoint.Application.DTOs;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace AltPoint.Application.Validations
 {
-    public class JobValidator : AbstractValidator<JobRequest>
+    public class JobValidator : AbstractValidator<JobDTO>
     {
         public JobValidator()
         {

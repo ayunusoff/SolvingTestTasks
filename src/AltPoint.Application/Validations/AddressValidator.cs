@@ -1,9 +1,9 @@
-﻿using AltPoint.Application.DTOs.Request;
+﻿using AltPoint.Application.DTOs;
 using FluentValidation;
 
-namespace AltPoint.Application.Validations
+namespace AltPoint.Application.Validations  
 {
-    public class AddressValidator : AbstractValidator<AddressRequest>
+    public class AddressValidator : AbstractValidator<AddressDTO>
     {
         public AddressValidator()
         {

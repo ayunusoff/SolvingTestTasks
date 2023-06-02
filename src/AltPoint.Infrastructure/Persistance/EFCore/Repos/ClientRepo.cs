@@ -4,6 +4,7 @@ using AltPoint.Domain.Interfaces;
 using AltPoint.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace AltPoint.Infrastructure.Persistance.EFCore
 {
@@ -40,10 +41,6 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
         public Client GetByIdWithoutTracking(Guid id)
         {
             return _context.Clients
-                .Include(c => c.LivingAddress)
-                .Include(c => c.RegAddress)
-                .Include(c => c.Passport)
-                .Include(c => c.Spouse)
                 .AsNoTracking()
                 .FirstOrDefault(c => c.Id == id)!;
         }
@@ -54,18 +51,18 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .Include(c => c.LivingAddress)
                 .Include(c => c.RegAddress)
                 .Include(c => c.Passport)
-                .Include(c => c.Spouse)
-                .Include(c => c.Communications)
                 .Include(c => c.Сhildrens)
+                .Include(c => c.Communications)
+                .Include(c => c.Spouse)
+                    .ThenInclude(s => s.Passport)
+                .Include(c => c.Spouse)
+                    .ThenInclude(s => s.LivingAddress)
+                .Include(c => c.Spouse)
+                    .ThenInclude(s => s.RegAddress)
+                .Include(c => c.Spouse)
+                    .ThenInclude(c => c.Communications)
                 .AsSplitQuery()
                 .FirstOrDefault(c => c.Id == id)!;
-
-            if (client?.Spouse != null)
-            { 
-                _context.Entry(client.Spouse).Reference(s => s.Passport).Load();
-                _context.Entry(client.Spouse).Reference(s => s.LivingAddress).Load();
-                _context.Entry(client.Spouse).Reference(s => s.RegAddress).Load();
-            }
 
             return client;
         }
@@ -76,9 +73,9 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                 .Include(c => c.LivingAddress)
                 .Include(c => c.RegAddress)
                 .Include(c => c.Passport)
-                .Include(c => c.Jobs)
+                .Include(c => c.Jobs!)
                     .ThenInclude(j => j.FactAddress)
-                .Include(c => c.Jobs)
+                .Include(c => c.Jobs!)
                     .ThenInclude(j => j.JurAddress);
 
             int count = await _context.Clients.CountAsync();
@@ -118,31 +115,26 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
 
         public async Task Update(Client client)
         {
-            foreach (var entry in _context.ChangeTracker.Entries())
-                Console.WriteLine(entry);
-
-            _context.Attach(client);
-            //foreach (var entry in _context.ChangeTracker.Entries())
-            //  entry.State = EntityState.Modified;//Console.WriteLine(entry);
-            //foreach (var entry in _context.ChangeTracker.Entries())
-            //    if (entry. == EntityState.Added)
-            //        entry.State = EntityState.Deleted;
-            foreach (var refer in _context.Entry(client).References)
-            { 
-                var valeu = refer == null ? "null" : "Cur";
-                Console.WriteLine($"curValue - {valeu}, {refer.EntityEntry.State}");
+            _context.Update(client);
+            foreach(var cv in _context.Entry(client).CurrentValues.Properties)
+            {
+                Console.WriteLine(cv.PropertyInfo!.Name);
             }
+            foreach (var entry in _context.ChangeTracker.Entries())
+            {
+                Console.WriteLine(entry);
+            }
+
             foreach (var entry in _context.ChangeTracker.Entries())
             {
                 Console.WriteLine($"<--- {entry} ---- {entry.CurrentValues} ---->");
                 foreach (var oValue in entry.References)
                     Console.WriteLine($"<--- {oValue.EntityEntry.State} ---- {oValue.CurrentValue} ---- {entry.Entity} ---->");
-
             }
         }
-        public async Task PartialUpdate()
+        public void PartialUpdate(Client client)
         {
-
+            _context.Update(client);
         }
     }
 }

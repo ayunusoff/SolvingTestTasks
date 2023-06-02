@@ -1,15 +1,14 @@
-﻿using AltPoint.Application.DTOs.Request;
-using AltPoint.Application.DTOs.Response;
+﻿using AltPoint.Application.DTOs;
 
 namespace AltPoint.Application.Common
 {
     public interface IClientService
     {
-        Task<ClientPaginationResponse> GetAllClientsWithParam(ClientQueryRequest parameters);
+        Task<ClientPaginationDTO> GetAllClientsWithParam(ClientQueryDTO parameters);
         Task DeleteClient(Guid id);
-        ClientWithSpouseResponse GetClient(Guid id);
-        Task<Guid> PostClient(ClientRequest client);
-        Task PatchClient(ClientRequest client);
-        Task UpdateClient(Guid id, ClientResponse clientResponse);
+        ClientWithSpouseDTO GetClient(Guid id);
+        Task<Guid> PostClient(ClientWithSpouseDTO client);
+        Task PatchClient(Guid id, ClientWithSpouseDTO client);
+        Task UpdateClient(ClientWithSpouseDTO client);
     }
 }

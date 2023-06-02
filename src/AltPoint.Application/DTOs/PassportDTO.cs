@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AltPoint.Application.DTOs.Response
+namespace AltPoint.Application.DTOs
 {
-    public class PassportResponse
+    public class PassportDTO
     {
         public Guid Id { get; set; }
 

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AltPoint.Application.DTOs.Request
+namespace AltPoint.Application.DTOs
 {
-    public class ChildRequest
+    public class ChildDTO
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Patronymic { get; set; } = null!;

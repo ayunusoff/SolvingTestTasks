@@ -33,7 +33,6 @@ namespace AltPoint.Infrastructure.Extensions
             Expression body = Expression.Constant(false);
 
             var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-            var toStringMethod = typeof(object).GetMethod("ToString");
 
             var properties = typeof(TEntity).GetProperties().Where(property => property.PropertyType == typeof(string));
             foreach (var property in properties)

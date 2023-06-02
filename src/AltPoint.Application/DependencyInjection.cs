@@ -1,12 +1,11 @@
 ﻿using AltPoint.Application.Common;
-using AltPoint.Application.DTOs.Request;
+using AltPoint.Application.DTOs;
 using AltPoint.Application.Mapping;
 using AltPoint.Application.Services;
 using AltPoint.Application.Validations;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AltPoint.Application
 {
@@ -14,7 +13,9 @@ namespace AltPoint.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<ClientRequest>, ClientValidator>();
+            services.AddScoped<IValidator<ClientDTO>, ClientValidator>();
+            services.AddScoped<IValidator<ClientWithSpouseDTO>, ClientWithSpouseValidator>();
+
             services.AddTransient<IClientService, ClientService>();
 
             var mapperConfig = new MapperConfiguration(mc =>

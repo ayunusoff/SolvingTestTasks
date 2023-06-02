@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AltPoint.Application.DTOs.Response
+namespace AltPoint.Application.DTOs
 {
-    public class JobResponse
+    public class JobDTO
     {
         public Guid Id { get; set; }
         public JobType? Type { get; set; }
@@ -17,9 +17,9 @@ namespace AltPoint.Application.DTOs.Response
         public double MonIncome { get; set; }
         public string? Tin { get; set; }
         public Guid FactAddressId { get; set; }
-        public AddressResponse? FactAddress { get; set; }
+        public AddressDTO? FactAddress { get; set; }
         public Guid JurAddressId { get; set; }
-        public AddressResponse? JurAddress { get; set; }
+        public AddressDTO? JurAddress { get; set; }
         public string? PhoneNumber { get; set; }
     }
 }

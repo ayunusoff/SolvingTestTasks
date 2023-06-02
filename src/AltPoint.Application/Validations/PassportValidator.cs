@@ -1,9 +1,9 @@
-﻿using AltPoint.Application.DTOs.Request;
+﻿using AltPoint.Application.DTOs;
 using FluentValidation;
 
 namespace AltPoint.Application.Validations
 {
-    public class PassportValidator : AbstractValidator<PassportRequest>
+    public class PassportValidator : AbstractValidator<PassportDTO>
     {
         public PassportValidator()
         {
