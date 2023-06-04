@@ -1,3 +1,4 @@
+using AltPoint.Api.Extensions;
 using AltPoint.Application;
 using AltPoint.Infrastructure;
 using AltPoint.Infrastructure.Persistance.EFCore;
@@ -10,7 +11,7 @@ builder.Services.AddApplication()
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
-if (app.Environment.IsProduction())
+if (app.Environment.IsProduction()) // В целях демонстрции в докере не пакости для
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -20,8 +21,11 @@ using (var scope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 }
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseExceptionHandlerMiddleware();
 
 app.MapControllers();
 

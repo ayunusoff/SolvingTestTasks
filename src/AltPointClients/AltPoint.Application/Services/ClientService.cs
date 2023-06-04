@@ -29,7 +29,7 @@ namespace AltPoint.Application.Services
             Client client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new ArgumentNullException($"client с ID:{id} не найден!");
+                throw new ArgumentNullException();
 
             return _mapper.Map<ClientWithSpouseDTO>(client);
         }
@@ -76,7 +76,7 @@ namespace AltPoint.Application.Services
             var client = _clientRepo.GetById(id);
 
             if (client is null)
-                throw new ArgumentNullException($"client с ID:{id} не найден!");
+                throw new ArgumentNullException();
 
             _clientRepo.Remove(client);
             await _clientRepo.SaveChanges();

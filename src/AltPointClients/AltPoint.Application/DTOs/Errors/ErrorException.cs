@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AltPoint.Application.DTOs.Errors
 {
-    public class ValidationExceptions
+    public class ErrorException
     {
         public string field { get; set; } = null!;
 

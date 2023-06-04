@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace AltPoint.Application.DTOs.Errors
 {
@@ -10,5 +6,7 @@ namespace AltPoint.Application.DTOs.Errors
     {
         public int status { get; set; }
         public ErrorCode code { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<ErrorException>? exceptions { get; set; }
     }
 }

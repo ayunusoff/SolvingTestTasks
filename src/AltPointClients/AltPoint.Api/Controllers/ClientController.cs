@@ -21,117 +21,44 @@ namespace AltPoint.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] ClientQueryDTO parameters)
         {
-            try
-            {
-                ClientPaginationDTO clients = await _clientService.GetAllClientsWithParam(parameters);
-                return Ok(clients);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            ClientPaginationDTO clients = await _clientService.GetAllClientsWithParam(parameters);
+            return Ok(clients);
         }
 
         [HttpGet("{clientId}")]
         public IActionResult GetById(Guid clientId)
         {
-            try
-            {
-                ClientWithSpouseDTO client = _clientService.GetClient(clientId);
-                return Ok(client);
-            }
-            catch (ArgumentNullException)    
-            {
-                return NotFound(new Error { status = 404, code = ErrorCode.ENTITY_NOT_FOUND });
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            ClientWithSpouseDTO client = _clientService.GetClient(clientId);
+            return Ok(client);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ClientWithSpouseDTO clientRequest)
         {
-            try
-            {
-                Guid id = await _clientService.PostClient(clientRequest)!;
-                return StatusCode((int)HttpStatusCode.Created, id);
-            }
-            catch (ValidationException e)
-            {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity, GetValidationErrResponse(e));
-            }
-            catch (Exception) 
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            Guid id = await _clientService.PostClient(clientRequest)!;
+            return StatusCode((int)HttpStatusCode.Created, id);
         }
 
         [HttpPatch("{clientId}")]
         public async Task<IActionResult> Patch(Guid clientId, [FromBody] ClientWithSpouseDTO clientRequest)
         {
-            try
-            {
-                await _clientService.PatchClient(clientId, clientRequest);
-                return Ok();
-            }
-            catch (ValidationException e)
-            {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity, GetValidationErrResponse(e));
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            await _clientService.PatchClient(clientId, clientRequest);
+            return Ok();
         }
 
         [HttpPut()]
         public async Task<IActionResult> Put([FromBody] ClientWithSpouseDTO clientRequest)
         {
-            try
-            {
-                await _clientService.UpdateClient(clientRequest);
-                return NoContent();
-            }
-            catch (ValidationException e)
-            {
-                return StatusCode((int)HttpStatusCode.UnprocessableEntity, GetValidationErrResponse(e));
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            await _clientService.UpdateClient(clientRequest);
+            return NoContent();
         }
 
         [HttpDelete("{clientId}")]
         public async Task<IActionResult> Delete(Guid clientId)
         {
-            try
-            {
-                await _clientService.DeleteClient(clientId);
-                return StatusCode((int)HttpStatusCode.NoContent, "Клиент мягко удален");
-            }
-            catch (ArgumentNullException)
-            {
-                return NotFound(new Error { status = 404, code = ErrorCode.ENTITY_NOT_FOUND });
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { code = ErrorCode.INTERNAL_SERVER_ERROR, status = 500 });
-            }
+            await _clientService.DeleteClient(clientId);
+            return NoContent();
         }
 
-        private ValidationError GetValidationErrResponse(ValidationException e)
-        {
-            var errors = e.Errors.Select(x => new ValidationExceptions
-            {
-                field = x.PropertyName,
-                rule = x.ErrorCode,
-                message = x.ErrorMessage
-            }).ToList();
-
-            return new ValidationError { status = (int)HttpStatusCode.UnprocessableEntity, code = ErrorCode.VALIDATION_EXCEPTION, exceptions = errors };
-        }
     }
 }
