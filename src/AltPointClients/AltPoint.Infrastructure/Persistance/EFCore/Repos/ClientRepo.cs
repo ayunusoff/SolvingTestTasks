@@ -1,10 +1,10 @@
-﻿using AltPoint.Domain.Common;
-using AltPoint.Domain.Entities;
+﻿using AltPoint.Domain.Entities;
 using AltPoint.Domain.Interfaces;
 using AltPoint.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Reflection.Metadata;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Runtime.InteropServices.JavaScript;
+using System.Text.Json;
 
 namespace AltPoint.Infrastructure.Persistance.EFCore
 {
@@ -21,22 +21,6 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
         {
             await _context.Clients.AddAsync(client);
         }
-
-        public async Task<IEnumerable<Client>> GetAll()
-        {
-            return await _context.Clients.AsNoTracking().ToListAsync();
-        }
-
-        public IEnumerable<Client> GetAllSoftDeleted()
-        {
-            return _context.Clients.AsNoTracking()
-                .Include(c => c.LivingAddress)
-                .Include(c => c.RegAddress)
-                .Include(c => c.Passport)
-                .Include(c => c.Spouse)
-                .IgnoreQueryFilters().Where(c => c.IsDeleted).AsEnumerable();
-        }
-
 
         public Client GetByIdWithoutTracking(Guid id)
         {
@@ -61,45 +45,36 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
                     .ThenInclude(s => s.RegAddress)
                 .Include(c => c.Spouse)
                     .ThenInclude(c => c.Communications)
-                .AsSplitQuery()
                 .FirstOrDefault(c => c.Id == id)!;
 
             return client;
         }
 
-        public async Task<Page> GetClientsWithParams(List<string>? SortBy, List<string>? SortDir, int Limit, int Page, string? Search)
+        public async Task<Page> GetClientsWithParams(string SortBy, string SortDir, int Limit, int Page, string? Search)
         {
             IQueryable<Client> clientsQuery = _context.Clients.AsNoTracking()
                 .Include(c => c.LivingAddress)
                 .Include(c => c.RegAddress)
                 .Include(c => c.Passport)
+                .Include(c => c.Сhildrens)
+                .Include(c => c.Communications)
                 .Include(c => c.Jobs!)
                     .ThenInclude(j => j.FactAddress)
                 .Include(c => c.Jobs!)
-                    .ThenInclude(j => j.JurAddress);
-
-            int count = await _context.Clients.CountAsync();
+                    .ThenInclude(j => j.JurAddress)
+                .OrderBy(SortBy, SortDir)
+                .Skip(Limit * (Page - 1))
+                .Take(Limit);
 
             if (Search != null)
                 clientsQuery = clientsQuery.Search(Search);
-
-            if (SortBy != null && SortDir != null)
-                return new Page
-                {
-                    Limit = Limit,
-                    PageNum = Page,
-                    Total = count,
-                    clients = clientsQuery.Skip(Limit * (Page - 1))
-                        .Take(Limit).ToList().Sort(SortBy!, SortDir!)
-                };
 
             return new Page
             {
                 Limit = Limit,
                 PageNum = Page,
-                Total = count,
-                clients = await clientsQuery.Skip(Limit * (Page - 1))
-                    .Take(Limit).ToListAsync()
+                Total = await _context.Clients.CountAsync(),
+                clients = clientsQuery
             };
         }
 
@@ -117,9 +92,16 @@ namespace AltPoint.Infrastructure.Persistance.EFCore
         {
             _context.Update(client);
         }
-        public void PartialUpdate(Client client)
+        public void PartialUpdate(Client client, Dictionary<string, object?> patches)
         {
-            _context.Update(client);
+            foreach (var item in patches)
+            {
+                var prop = _context.Entry(client).Member(item.Key);
+                if (item.Value is null && prop is ReferenceEntry referenceEntry)
+                    _context.Remove(referenceEntry.TargetEntry!);
+                else
+                    prop.CurrentValue = ((JsonElement)item.Value!).Deserialize(prop.CurrentValue!.GetType());
+            }
         }
     }
 }

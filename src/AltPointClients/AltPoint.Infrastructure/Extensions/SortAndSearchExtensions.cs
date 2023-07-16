@@ -1,31 +1,23 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Linq.Expressions;
 using System.Reflection;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AltPoint.Infrastructure.Extensions
 {
     public static class SortAndSearchExtensions
     {
-        public static IEnumerable<TEntity> Sort<TEntity>(this IEnumerable<TEntity> items, List<string> sortProperty, List<string> sortDir) where TEntity : class
+        public static IOrderedQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> items, string sortProperty, string sortDir) where TEntity : class
         {
-            IOrderedEnumerable<TEntity>? temp = null;
+            var method = sortDir.ToUpper() == "ASC" ? "OrderBy" : "OrderByDescending";
+            var type = typeof(TEntity);
+            var parameter = Expression.Parameter(type, "p");
+            var property = type.GetProperty(sortProperty);
+            var keySelector = Expression.Lambda(Expression.MakeMemberAccess(parameter, property), parameter );
 
-            for (int i = 0; i < sortProperty.Count; ++i)
-            {
-                var type = typeof(TEntity);
-                var parameter = Expression.Parameter(type, "p");
-                var property = Expression.Property(parameter, sortProperty[i]);
-                var lambda = Expression.Lambda<Func<TEntity, IComparable>>(Expression.Convert(property, typeof(IComparable)), parameter).Compile();
-                if (temp is null) 
-                {
-                    temp = sortDir[i] == "Asc" ? items.OrderBy(lambda) : items.OrderByDescending(lambda);
-                }
-                else
-                {
-                    temp = sortDir[i] == "Asc" ? temp.ThenBy(lambda) : temp.ThenByDescending(lambda);
-                }
-            }
-
-            return temp ?? items;
+            return (IOrderedQueryable<TEntity>)items.Provider.CreateQuery<TEntity>(
+                Expression.Call(typeof(Queryable), method, new Type[] { type, property.PropertyType },
+                                   items.Expression, Expression.Quote(keySelector)));
         }
         public static IQueryable<TEntity> Search<TEntity>(this IQueryable<TEntity> items, string searchItem) where TEntity : class
         {

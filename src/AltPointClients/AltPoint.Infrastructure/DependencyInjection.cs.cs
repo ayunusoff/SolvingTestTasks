@@ -15,7 +15,7 @@ namespace AltPoint.Infrastructure
             services.AddDbContext<AltPointContext>(options =>
                 options.UseNpgsql(config.GetConnectionString("Db"), b => b.MigrationsAssembly("AltPoint.Infrastructure")));
             services.AddScoped<IClientRepo, ClientRepo>();
-            services.AddScoped<IProducer, RabbitMQProducer>();
+            //services.AddScoped<IProducer, RabbitMQProducer>();
             return services;
         }
     }

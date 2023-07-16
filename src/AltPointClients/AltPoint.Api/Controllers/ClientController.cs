@@ -17,11 +17,11 @@ namespace AltPoint.Api.Controllers
             _clientService = clientService;
         }
 
-        //https://localhost:7038/api/Client?Limit=10&Page=1&Search=Test&SortQuery[0].SortBy=dob&SortQuery[0].SortDir=Asc&SortQuery[1].SortBy=MonIncome&SortQuery[1].SortDir=Desc
+        //https://localhost:7038/api/Client?Limit=10&Page=1&Search=Test&SortBy=dob&SortDir=Asc
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] ClientQueryDTO parameters)
+        public async Task<IActionResult> GetClientsWithParam([FromQuery] ClientQueryDTO parameters)
         {
-            ClientPaginationDTO clients = await _clientService.GetAllClientsWithParam(parameters);
+            ClientPaginationDTO clients = await _clientService.GetClientsWithParam(parameters);
             return Ok(clients);
         }
 
@@ -40,13 +40,13 @@ namespace AltPoint.Api.Controllers
         }
 
         [HttpPatch("{clientId}")]
-        public async Task<IActionResult> Patch(Guid clientId, [FromBody] ClientWithSpouseDTO clientRequest)
+        public async Task<IActionResult> Patch(Guid clientId, [FromBody] List<PatchDTO> patchDTOs)
         {
-            await _clientService.PatchClient(clientId, clientRequest);
+            await _clientService.PatchClient(clientId, patchDTOs);
             return Ok();
         }
 
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> Put([FromBody] ClientWithSpouseDTO clientRequest)
         {
             await _clientService.UpdateClient(clientRequest);

@@ -11,7 +11,7 @@ builder.Services.AddApplication()
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
-if (app.Environment.IsProduction()) // В целях демонстрции в докере не пакости для
+if (app.Environment.IsProduction())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

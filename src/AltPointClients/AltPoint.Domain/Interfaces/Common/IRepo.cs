@@ -6,8 +6,6 @@ namespace AltPoint.Domain.Interfaces
     {
         Task Add(TEntity obj);
         TEntity GetById(Guid id);
-        Task<IEnumerable<TEntity>> GetAll();
-        IEnumerable<TEntity> GetAllSoftDeleted();
         void Update(TEntity obj);
         void Remove(TEntity obj);
         Task<int> SaveChanges();

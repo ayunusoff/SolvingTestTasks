@@ -14,14 +14,12 @@ namespace AltPoint.Application.Services
         public readonly IValidator<ClientDTO> _validator;
         public readonly IValidator<ClientWithSpouseDTO> _validatorClientWithSpouse;
         public readonly IMapper _mapper;
-        public readonly IProducer _producer;
-        public ClientService(IClientRepo clientRepo, IValidator<ClientDTO> validator, IValidator<ClientWithSpouseDTO> validatorClientWithSpouse, IMapper mapper, IProducer producer)
+        public ClientService(IClientRepo clientRepo, IValidator<ClientDTO> validator, IValidator<ClientWithSpouseDTO> validatorClientWithSpouse, IMapper mapper)
         {
             _clientRepo = clientRepo;
             _validator = validator;
             _validatorClientWithSpouse = validatorClientWithSpouse;
             _mapper = mapper;
-            _producer = producer;
         }
 
         public ClientWithSpouseDTO GetClient(Guid id)
@@ -40,33 +38,15 @@ namespace AltPoint.Application.Services
             Client client = _mapper.Map<Client>(clientRequest);
 
             await _clientRepo.Add(client);
-
-            if (client.Spouse != null)
-            { 
-                client.SpouseId = client.Spouse.Id;
-                await _clientRepo.Add(client.Spouse!);
-            }
-
             await _clientRepo.SaveChanges();
-
-            MessageQueueDTO clientMessage = new MessageQueueDTO
-            {
-                EventName = "Create",
-                client = _mapper.Map<ClientQueueMessageDTO>(client)
-            };
-
-            _producer.SendClientMessage(clientMessage);
 
             return client.Id;
         }
 
-        public async Task<ClientPaginationDTO> GetAllClientsWithParam(ClientQueryDTO parameters)
+        public async Task<ClientPaginationDTO> GetClientsWithParam(ClientQueryDTO parameters)
         {
-            var sortBy = parameters.SortQuery?.Select(sq => sq.SortBy).ToList();
-            var sortDir = parameters.SortQuery?.Select(sq => sq.SortDir).ToList();
-
-            var clients = await _clientRepo.GetClientsWithParams(sortBy, sortDir, parameters.Limit, parameters.Page, parameters.Search);
-            var clientResponse = _mapper.Map<ClientPaginationDTO>(clients);
+            var clientsPage = await _clientRepo.GetClientsWithParams(parameters.SortBy, parameters.SortDir, parameters.Limit, parameters.Page, parameters.Search);
+            var clientResponse = _mapper.Map<ClientPaginationDTO>(clientsPage);
 
             return clientResponse;
         }
@@ -79,47 +59,26 @@ namespace AltPoint.Application.Services
                 throw new ArgumentNullException();
 
             _clientRepo.Remove(client);
+
             await _clientRepo.SaveChanges();
-
-            MessageQueueDTO clientMessage = new MessageQueueDTO
-            {
-                EventName = "Delete",
-                client = _mapper.Map<ClientQueueMessageDTO>(client)
-            };
-            _producer.SendClientMessage(clientMessage);
-
         }
 
-        public async Task PatchClient(Guid id, ClientWithSpouseDTO clientRequest) // TODO
+        public async Task PatchClient(Guid id, List<PatchDTO> patchDTOs)
         {
-            await _validatorClientWithSpouse.ValidateAndThrowAsync(clientRequest);
-
             Client client = _clientRepo.GetById(id);
-            _clientRepo.PartialUpdate(client);
-
-            client = _mapper.Map<Client>(clientRequest);//
+            _clientRepo.PartialUpdate(client, patchDTOs.ToDictionary(k => k.PropertyName, v => v.PropertyValue));
 
             await _clientRepo.SaveChanges();
         }
 
-        public async Task UpdateClient(ClientWithSpouseDTO clientRequest) // TODO
+        public async Task UpdateClient(ClientWithSpouseDTO clientRequest)
         {
-            //Client client = _clientRepo.GetById(clientRequest.Id);
-
             await _validatorClientWithSpouse.ValidateAndThrowAsync(clientRequest);
 
             Client client = _mapper.Map<Client>(clientRequest);
             
             _clientRepo.Update(client);
             await _clientRepo.SaveChanges();
-
-            MessageQueueDTO clientMessage = new MessageQueueDTO
-            {
-                EventName = "Update",
-                client = _mapper.Map<ClientQueueMessageDTO>(client)
-            };
-
-            _producer.SendClientMessage(clientMessage);
         }
     }
 }
